@@ -36,7 +36,7 @@ public class Token {
             case 1:
                 return this.lexeme + " - DOUBLE";
             case 2:
-                return this.lexeme + " - CHAR";
+                return this.lexeme + " - CHAR"; 
             case 3:
                 return this.lexeme + " - IDENTIFIER";
             case 4:
