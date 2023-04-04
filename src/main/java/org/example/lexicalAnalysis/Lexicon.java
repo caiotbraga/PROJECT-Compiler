@@ -40,7 +40,7 @@ public class Lexicon {
     }
 
     private char lastChar(){
-        char last = this.content[this.contentIndex--];
+        char last = content[contentIndex - 1];
         return last;
     }
 
@@ -155,6 +155,7 @@ public class Lexicon {
                     this.back();
                     return new Token(lexema.toString(), Token.CHAR_TYPE);
                 case 9:
+                
                         if(this.lastChar() == '=' && c == '>'){ 
                             throw new RuntimeException("ERROR: Incorrect relational operator format! --> \"" + lexema.toString() + "\"");
                         }
@@ -186,7 +187,7 @@ public class Lexicon {
                         }
                     break;
                 case 10:
-                        this.back();
+                        //this.back();
                         return new Token(lexema.toString(), Token.RELATIONAL_OPERATOR_TYPE);
                 case 99:
                     return new Token(lexema.toString(), Token.END_CODE_TYPE);
