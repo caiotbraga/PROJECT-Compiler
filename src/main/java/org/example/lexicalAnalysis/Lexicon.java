@@ -85,7 +85,12 @@ public class Lexicon {
                     } else if(c == '=' || c == '>' || c == '<'){
                         lexema.append(c);
                         state = 9;
-                    }else if (c == '$') {
+                    }
+                    else if(c == '+' || c == '-' || c == '*' || c == '/' || c == '%'){
+                        lexema.append(c);
+                        state = 11;
+                    }
+                    else if (c == '$') {
                         lexema.append(c);
                         state = 99;
                         this.back();
@@ -189,6 +194,8 @@ public class Lexicon {
                 case 10:
                         //this.back();
                         return new Token(lexema.toString(), Token.RELATIONAL_OPERATOR_TYPE);
+                case 11:
+                        
                 case 99:
                     return new Token(lexema.toString(), Token.END_CODE_TYPE);
             }
