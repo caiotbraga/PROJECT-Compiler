@@ -83,8 +83,13 @@ public class Lexicon {
                         lexema.append(c);
                         state = 6;
                     } else if(c == '=' || c == '>' || c == '<'){
-                        lexema.append(c);
-                        state = 9;
+                        if(nextChar() != ' '){
+                            lexema.append(c);
+                            state = 9;
+                        }else{
+                            lexema.append(c);
+                            state = 11;
+                        }
                     }
                     else if(c == '+' || c == '-' || c == '*' || c == '/' || c == '%'){
                         lexema.append(c);
@@ -160,7 +165,6 @@ public class Lexicon {
                     this.back();
                     return new Token(lexema.toString(), Token.CHAR_TYPE);
                 case 9:
-                
                         if(this.lastChar() == '=' && c == '>'){ 
                             throw new RuntimeException("ERROR: Incorrect relational operator format! --> \"" + lexema.toString() + "\"");
                         }
@@ -192,10 +196,11 @@ public class Lexicon {
                         }
                     break;
                 case 10:
-                        //this.back();
+                        this.back();
                         return new Token(lexema.toString(), Token.RELATIONAL_OPERATOR_TYPE);
                 case 11:
-                        
+                    this.back();
+                    return new Token(lexema.toString(), Token.ASSIGNMENT_OPERATOR);
                 case 99:
                     return new Token(lexema.toString(), Token.END_CODE_TYPE);
             }
