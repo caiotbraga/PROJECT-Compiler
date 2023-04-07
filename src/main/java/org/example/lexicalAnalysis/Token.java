@@ -9,7 +9,7 @@ public class Token {
     public static int ARITHMETIC_OPERATOR_TYPE = 5;
     public static int SPECIAL_CHARACTER_TYPE = 6;
     public static int RESERVED_WORD_TYPE = 7;
-    public static int ASSIGNMENT_OPERATOR = 8;
+    public static int ASSIGNMENT_OPERATOR_TYPE = 8;
     public static int END_CODE_TYPE = 99;
 
     private int type;
