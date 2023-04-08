@@ -46,7 +46,7 @@ public class Lexicon {
 
     //Identificar se char é letra
     private boolean isLetter(char c) {
-        return (c >= 'a') && (c <= 'z');
+        return ((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'));
     }
 
     //Identificar se char é dígito
@@ -110,6 +110,21 @@ public class Lexicon {
                         state = 1;
                     } else {
                         this.back();
+                        String newLexeme = lexema.toString();
+                        if(newLexeme.compareTo("int") == 0    ||
+                           newLexeme.compareTo("double") == 0 ||
+                           newLexeme.compareTo("float") == 0  ||
+                           newLexeme.compareTo("char") == 0   ||
+                           newLexeme.compareTo("String") == 0 ||
+                           newLexeme.compareTo("Integer") == 0||
+                           newLexeme.compareTo("if") == 0     ||
+                           newLexeme.compareTo("else") == 0   ||
+                           newLexeme.compareTo("while") == 0  ||
+                           newLexeme.compareTo("for") == 0    ||
+                           newLexeme.compareTo("main") == 0)
+                           {
+                            return new Token(lexema.toString(), Token.RESERVED_WORD_TYPE);
+                        }
                         return new Token(lexema.toString(), Token.IDENTIFIER_TYPE);
                     }
                     break;

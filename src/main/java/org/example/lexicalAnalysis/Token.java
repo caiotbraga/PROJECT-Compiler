@@ -55,4 +55,8 @@ public class Token {
         }
            return "";
        }
+
+    public String stringText(){
+        return this.lexeme.toString();
+    }
 }
