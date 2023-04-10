@@ -18,4 +18,8 @@ while (dinheiro <= 0){
 for(int i = 0; i < dinheiro; i++){
     CAIOBOLADAO
 }
+for(int i = 0; i < dinheiro; i++){
+    andreltlc
+}
+
 $
