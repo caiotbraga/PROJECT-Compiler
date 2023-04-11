@@ -145,7 +145,10 @@ public class Lexicon {
                     } else if (c == '.') {
                         lexema.append(c);
                         state = 3;
-                    } else {
+                    } else if(c == 'ˆ'){
+                        lexema.append(c);
+                        state = 16;
+                    }    else {
                         this.back();
                         return new Token(lexema.toString(), Token.INT_TYPE);
                     }
@@ -232,6 +235,18 @@ public class Lexicon {
                         throw new RuntimeException("ERROR: Incorrect char format! --> \"" + lexema.toString() + "\"");
                     }
                     break;
+                case 16:
+                    if(!isDigit(c)){
+                        throw new RuntimeException("ERROR: Incorrect RAISED-CAIO format");
+                    }else{
+                        lexema.append(c);
+                        state = 17;
+                    }
+                    break;
+                case 17:
+                    this.back();
+                    return new Token(lexema.toString(), Token.RAISED_CAIO_TYPE);
+                    
                     case 18:
                     if(!isDigit(c)&& !isLetter(c)){
                         throw new RuntimeException("ERROR: Incorrect TOKEN_A format");
