@@ -10,6 +10,7 @@ public class Token {
     public static int SPECIAL_CHARACTER_TYPE = 6;
     public static int RESERVED_WORD_TYPE = 7;
     public static int ASSIGNMENT_OPERATOR_TYPE = 8;
+    public static int TOKEN_A = 10;
     public static int END_CODE_TYPE = 99;
 
     private int type;
@@ -50,6 +51,8 @@ public class Token {
                 return this.lexeme + " - RESERVED WORD";
             case 8:
                 return this.lexeme + " - ASSIGNMENT OPERATOR";
+            case 10 :
+                return this.lexeme + " - TOKEN A";
             case 99:
                 return this.lexeme + " - END_CODE";
         }
