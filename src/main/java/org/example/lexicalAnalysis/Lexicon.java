@@ -9,6 +9,8 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.management.RuntimeErrorException;
+
 public class Lexicon {
     private char[] content;
     private int contentIndex;
@@ -26,7 +28,8 @@ public class Lexicon {
 
     //Retorna próximo char
     private char nextChar() {
-        return this.content[this.contentIndex++];
+        char next = content[contentIndex++];
+        return next;
     }
 
     //Verifica existe próximo char ou chegou ao final do código fonte
@@ -82,18 +85,19 @@ public class Lexicon {
                     } else if (c == '\'') {
                         lexema.append(c);
                         state = 6;
-                    } else if(c == '=' || c == '>' || c == '<'){
-                        if(nextChar() != ' '){
-                            lexema.append(c);
-                            state = 9;
-                        }else{
-                            lexema.append(c);
-                            state = 11;
-                        }
                     }
                     else if(c == '+' || c == '-' || c == '*' || c == '/' || c == '%'){
                         lexema.append(c);
                         state = 12;
+                    }else if(c == '='){
+                        lexema.append(c);
+                        state = 13;
+                    }else if(c == '<' ){
+                        lexema.append(c);
+                        state = 14;
+                    }else if(c == '>'){
+                        lexema.append(c);
+                        state = 15;
                     }
                     else if (c == '$') {
                         lexema.append(c);
@@ -181,46 +185,49 @@ public class Lexicon {
                 case 8:
                     this.back();
                     return new Token(lexema.toString(), Token.CHAR_TYPE);
-                case 9:
-                        if(this.lastChar() == '=' && c == '>'){ 
-                            throw new RuntimeException("ERROR: Incorrect relational operator format! --> \"" + lexema.toString() + "\"");
-                        }
-                        if(this.lastChar() == '=' && c == '<'){
-                            throw new RuntimeException("ERROR: Incorrect relational operator format! --> \"" + lexema.toString() + "\"");
-                        }
-                        if(this.lastChar() == '=' && c == ' '){
-                            throw new RuntimeException("ERROR: Incorrect relational operator format! --> \"" + lexema.toString() + "\"");
-                        }
-                        if(this.lastChar() == '>' && c == '>'){
-                            throw new RuntimeException("ERROR: Incorrect relational operator format! --> \"" + lexema.toString() + "\"");
-                        }
-                        if(this.lastChar() == '>' && c == '<'){
-                            throw new RuntimeException("ERROR: Incorrect relational operator format! --> \"" + lexema.toString() + "\"");
-                        }
-                        if(this.lastChar() == '<' && c == '<'){
-                            throw new RuntimeException("ERROR: Incorrect relational operator format! --> \"" + lexema.toString() + "\"");
-                        }
-                        if(c == ' ' && lastChar() == '='){
-                            throw new RuntimeException("ERROR: Incorrect relational operator format! --> \"" + lexema.toString() + "\"");
-                        }
-                        if(c == '='){
-                            lexema.append(c);
-                            state = 10;
-                        }
-                        if(c == ' ' && (lastChar() == '<' || lastChar() == '>')){
-                            lexema.append(c);
-                            state = 10;
-                        }
-                    break;
                 case 10:
-                        this.back();
-                        return new Token(lexema.toString(), Token.RELATIONAL_OPERATOR_TYPE);
+                    this.back();
+                    return new Token(lexema.toString(), Token.RELATIONAL_OPERATOR_TYPE);
                 case 11:
                     this.back();
                     return new Token(lexema.toString(), Token.ASSIGNMENT_OPERATOR_TYPE);
                 case 12:
                     this.back();
                     return new Token(lexema.toString(), Token.ARITHMETIC_OPERATOR_TYPE);
+                case 13: 
+                    if(c != '='){
+                        this.back();
+                        state = 11;
+                    }else{
+                        lexema.append(c);
+                        state = 10;
+                    }
+                    break;
+                case 14:
+                    if(c == '>'){
+                        lexema.append(c);
+                        state = 10;
+                    }else if (c == '='){
+                        lexema.append(c);
+                        state = 10;
+                    }else if(c != '<'){
+                        this.back();
+                        state = 11;
+                    }else{
+                        throw new RuntimeException("ERROR: Incorrect char format! --> \"" + lexema.toString() + "\"");
+                    }
+                    break;
+                case 15:
+                    if(c == '='){
+                        lexema.append(c);
+                        state = 11;
+                    }else if (c != '='){
+                        this.back();
+                        state = 11;
+                    }else{
+                        throw new RuntimeException("ERROR: Incorrect char format! --> \"" + lexema.toString() + "\"");
+                    }
+                    break;
                 case 99:
                     return new Token(lexema.toString(), Token.END_CODE_TYPE);
             }
