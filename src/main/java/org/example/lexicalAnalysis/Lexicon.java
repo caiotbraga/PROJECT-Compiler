@@ -99,6 +99,10 @@ public class Lexicon {
                         lexema.append(c);
                         state = 15;
                     }
+                    else if(c == 'ç'){
+                        lexema.append(c);
+                        state = 18;
+                    }
                     else if (c == '$') {
                         lexema.append(c);
                         state = 99;
@@ -242,6 +246,18 @@ public class Lexicon {
                 case 17:
                     this.back();
                     return new Token(lexema.toString(), Token.RAISED_CAIO_TYPE);
+                    
+                    case 18:
+                    if(!isDigit(c)&& !isLetter(c)){
+                        throw new RuntimeException("ERROR: Incorrect TOKEN_A format");
+                    }else{
+                        lexema.append(c);
+                        state = 19;
+                    }
+                    break;
+                case 19:
+                    this.back();
+                    return new Token(lexema.toString(), Token.TOKEN_A);
                 case 99:
                     return new Token(lexema.toString(), Token.END_CODE_TYPE);
             }
