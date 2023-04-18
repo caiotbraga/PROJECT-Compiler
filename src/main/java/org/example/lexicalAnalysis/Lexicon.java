@@ -129,9 +129,8 @@ public class Lexicon {
                                 newLexeme.compareTo("else") == 0 ||
                                 newLexeme.compareTo("while") == 0 ||
                                 newLexeme.compareTo("for") == 0 ||
-                                newLexeme.compareTo("main") == 0 ||
-                                newLexeme.compareTo("CAIOBOLADAO") == 0 ||
-                                newLexeme.compareTo("andreltlc") == 0) {
+                                newLexeme.compareTo("main") == 0 
+                                ) {
                             return new Token(lexema.toString(), Token.RESERVED_WORD_TYPE);
                         }
                         return new Token(lexema.toString(), Token.IDENTIFIER_TYPE);
@@ -173,7 +172,7 @@ public class Lexicon {
                     this.back();
                     return new Token(lexema.toString(), Token.SPECIAL_CHARACTER_TYPE);
                 case 6:
-                    if (this.isDigit(c) && this.isLetter(c)) {
+                    if (this.isDigit(c) || this.isLetter(c)) {
                         lexema.append(c);
                         state = 7;
                     } else {
@@ -249,7 +248,7 @@ public class Lexicon {
                     return new Token(lexema.toString(), Token.RAISED_CAIO_TYPE);
 
                 case 18:
-                    if (!isDigit(c) || !isLetter(c)) {
+                    if (!isDigit(c) && !isLetter(c)) {
                         throw new RuntimeException("ERROR: Incorrect TOKEN_A format");
                     } else {
                         lexema.append(c);
