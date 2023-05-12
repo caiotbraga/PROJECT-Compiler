@@ -11,34 +11,35 @@ public class Token {
     public static int RESERVED_WORD_TYPE = 7;
     public static int ASSIGNMENT_OPERATOR_TYPE = 8;
     public static int RAISED_CAIO_TYPE = 9;
+    public static int TOKEN_A = 10;
+    public static int RING_0 = 11;
     public static int END_CODE_TYPE = 99;
 
     private int type;
     private String lexeme;
 
-    public Token(String lexeme, int type){
+    public Token(String lexeme, int type) {
         this.lexeme = lexeme;
         this.type = type;
     }
 
-    public String getLexeme(){
+    public String getLexeme() {
         return this.lexeme;
     }
 
-    public int getType(){
+    public int getType() {
         return this.type;
     }
 
     @Override
-    public String toString()
-    {
-        switch(this.type){
+    public String toString() {
+        switch (this.type) {
             case 0:
-                return this.lexeme + " - INT" ;
+                return this.lexeme + " - INT";
             case 1:
                 return this.lexeme + " - DOUBLE";
             case 2:
-                return this.lexeme + " - CHAR"; 
+                return this.lexeme + " - CHAR";
             case 3:
                 return this.lexeme + " - IDENTIFIER";
             case 4:
@@ -53,13 +54,17 @@ public class Token {
                 return this.lexeme + " - ASSIGNMENT OPERATOR";
             case 9:
                 return this.lexeme + " - RAISED CAIO";
+            case 10:
+                return this.lexeme + " - TOKEN A";
+            case 11:
+                return this.lexeme + " - RING 0";
             case 99:
                 return this.lexeme + " - END_CODE";
         }
-           return "";
-       }
+        return "";
+    }
 
-    public String stringText(){
+    public String stringText() {
         return this.lexeme.toString();
     }
 }

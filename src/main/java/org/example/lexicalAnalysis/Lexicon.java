@@ -26,38 +26,38 @@ public class Lexicon {
         }
     }
 
-    //Retorna próximo char
+    // Retorna próximo char
     private char nextChar() {
         char next = content[contentIndex++];
         return next;
     }
 
-    //Verifica existe próximo char ou chegou ao final do código fonte
+    // Verifica existe próximo char ou chegou ao final do código fonte
     private boolean hasNextChar() {
         return contentIndex < this.content.length;
     }
 
-    //Retrocede o índice que aponta para o "char da vez" em uma unidade
+    // Retrocede o índice que aponta para o "char da vez" em uma unidade
     private void back() {
         this.contentIndex--;
     }
 
-    private char lastChar(){
+    private char lastChar() {
         char last = content[contentIndex - 1];
         return last;
     }
 
-    //Identificar se char é letra
+    // Identificar se char é letra
     private boolean isLetter(char c) {
         return ((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z'));
     }
 
-    //Identificar se char é dígito
+    // Identificar se char é dígito
     private boolean isDigit(char c) {
         return (c >= '0') && (c <= '9');
     }
 
-    public Token nextToken() { //state machine
+    public Token nextToken() { // state machine
         Token token = null;
         char c;
         int state = 0;
@@ -85,24 +85,28 @@ public class Lexicon {
                     } else if (c == '\'') {
                         lexema.append(c);
                         state = 6;
-                    }
-                    else if(c == '+' || c == '-' || c == '*' || c == '/' || c == '%'){
+                    } else if (c == '+' || c == '-' || c == '*' || c == '/' || c == '%') {
                         lexema.append(c);
                         state = 12;
-                    }else if(c == '='){
+                    } else if (c == '=') {
                         lexema.append(c);
                         state = 13;
-                    }else if(c == '<' ){
+                    } else if (c == '<') {
                         lexema.append(c);
                         state = 14;
-                    }else if(c == '>'){
+                    } else if (c == '>') {
                         lexema.append(c);
                         state = 15;
-                    }
-                    else if (c == '$') {
+                    } else if (c == 'ç') {
+                        lexema.append(c);
+                        state = 18;
+                    } else if (c == '$') {
                         lexema.append(c);
                         state = 99;
                         this.back();
+                    } else if (c == '#') {
+                        lexema.append(c);
+                        state = 20;
                     } else {
                         lexema.append(c);
                         throw new RuntimeException("Erro: token inválido \"" + lexema.toString() + "\"");
@@ -115,20 +119,18 @@ public class Lexicon {
                     } else {
                         this.back();
                         String newLexeme = lexema.toString();
-                        if(newLexeme.compareTo("int") == 0    ||
-                           newLexeme.compareTo("double") == 0 ||
-                           newLexeme.compareTo("float") == 0  ||
-                           newLexeme.compareTo("char") == 0   ||
-                           newLexeme.compareTo("String") == 0 ||
-                           newLexeme.compareTo("Integer") == 0||
-                           newLexeme.compareTo("if") == 0     ||
-                           newLexeme.compareTo("else") == 0   ||
-                           newLexeme.compareTo("while") == 0  ||
-                           newLexeme.compareTo("for") == 0    ||
-                           newLexeme.compareTo("main") == 0   ||
-                           newLexeme.compareTo("CAIOBOLADAO") == 0||
-                           newLexeme.compareTo("andreltlc") == 0)
-                           {
+                        if (newLexeme.compareTo("int") == 0 ||
+                                newLexeme.compareTo("double") == 0 ||
+                                newLexeme.compareTo("float") == 0 ||
+                                newLexeme.compareTo("char") == 0 ||
+                                newLexeme.compareTo("String") == 0 ||
+                                newLexeme.compareTo("Integer") == 0 ||
+                                newLexeme.compareTo("if") == 0 ||
+                                newLexeme.compareTo("else") == 0 ||
+                                newLexeme.compareTo("while") == 0 ||
+                                newLexeme.compareTo("for") == 0 ||
+                                newLexeme.compareTo("main") == 0 
+                                ) {
                             return new Token(lexema.toString(), Token.RESERVED_WORD_TYPE);
                         }
                         return new Token(lexema.toString(), Token.IDENTIFIER_TYPE);
@@ -141,10 +143,10 @@ public class Lexicon {
                     } else if (c == '.') {
                         lexema.append(c);
                         state = 3;
-                    } else if(c == 'ˆ'){
+                    } else if (c == '^') {
                         lexema.append(c);
                         state = 16;
-                    }    else {
+                    } else {
                         this.back();
                         return new Token(lexema.toString(), Token.INT_TYPE);
                     }
@@ -170,21 +172,21 @@ public class Lexicon {
                     this.back();
                     return new Token(lexema.toString(), Token.SPECIAL_CHARACTER_TYPE);
                 case 6:
-                    if(this.isDigit(c) || this.isLetter(c)){
+                    if (this.isDigit(c) || this.isLetter(c)) {
                         lexema.append(c);
                         state = 7;
-                    }else{
+                    } else {
                         throw new RuntimeException("ERROR: Incorrect char format! --> \"" + lexema.toString() + "\"");
                     }
                     break;
                 case 7:
-                    if(c == '\''){
+                    if (c == '\'') {
                         lexema.append(c);
                         state = 8;
-                    }else{
+                    } else {
                         throw new RuntimeException("ERROR: Incorrect char format! --> \"" + lexema.toString() + "\"");
                     }
-                break;
+                    break;
                 case 8:
                     this.back();
                     return new Token(lexema.toString(), Token.CHAR_TYPE);
@@ -197,44 +199,46 @@ public class Lexicon {
                 case 12:
                     this.back();
                     return new Token(lexema.toString(), Token.ARITHMETIC_OPERATOR_TYPE);
-                case 13: 
-                    if(c != '='){
+                case 13:
+                    if (c != '=') {
                         this.back();
                         state = 11;
-                    }else{
+                    } else {
                         lexema.append(c);
                         state = 10;
                     }
                     break;
                 case 14:
-                    if(c == '>'){
+                    if (c == '>') {
                         lexema.append(c);
                         state = 10;
-                    }else if (c == '='){
+                    } else if (c == '=') {
                         lexema.append(c);
                         state = 10;
-                    }else if(c != '<'){
+                    } else if (c == '<') {
                         this.back();
                         state = 11;
-                    }else{
-                        throw new RuntimeException("ERROR: Incorrect char format! --> \"" + lexema.toString() + "\"");
+                    } else {
+                        throw new RuntimeException(
+                                "ERROR: Incorrect operator relational format! --> \"" + lexema.toString() + "\"");
                     }
                     break;
                 case 15:
-                    if(c == '='){
+                    if (c == '=') {
                         lexema.append(c);
                         state = 11;
-                    }else if (c != '='){
+                    } else if (c != '=') {
                         this.back();
                         state = 11;
-                    }else{
-                        throw new RuntimeException("ERROR: Incorrect char format! --> \"" + lexema.toString() + "\"");
+                    } else {
+                        throw new RuntimeException(
+                                "ERROR: Incorrect operator relational format! --> \"" + lexema.toString() + "\"");
                     }
                     break;
                 case 16:
-                    if(!isDigit(c)){
+                    if (!isDigit(c)) {
                         throw new RuntimeException("ERROR: Incorrect RAISED-CAIO format");
-                    }else{
+                    } else {
                         lexema.append(c);
                         state = 17;
                     }
@@ -242,6 +246,29 @@ public class Lexicon {
                 case 17:
                     this.back();
                     return new Token(lexema.toString(), Token.RAISED_CAIO_TYPE);
+
+                case 18:
+                    if (!isDigit(c) && !isLetter(c)) {
+                        throw new RuntimeException("ERROR: Incorrect TOKEN_A format");
+                    } else {
+                        lexema.append(c);
+                        state = 19;
+                    }
+                    break;
+                case 19:
+                    this.back();
+                    return new Token(lexema.toString(), Token.TOKEN_A);
+                case 20:
+                    if (!(c == '_')) {
+                        throw new RuntimeException("ERROR: Incorrect RING_0 format");
+                    } else {
+                        lexema.append(c);
+                        state = 21;
+                    }
+                    break;
+                case 21:
+                    this.back();
+                    return new Token(lexema.toString(), Token.RING_0);
                 case 99:
                     return new Token(lexema.toString(), Token.END_CODE_TYPE);
             }
