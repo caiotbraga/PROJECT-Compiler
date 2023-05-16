@@ -1,14 +1,11 @@
 package org.example;
 
-import org.example.lexicalAnalysis.Lexicon;
-import org.example.lexicalAnalysis.Token;
-
+import org.example.lexicalAnalysis.*;
+import org.example.syntheticAnalysis.*;
 public class Main {
     public static void main(String[] args) {
         Lexicon lexicon = new Lexicon("/workspace/Compiler/src/main/java/org/example/lexicalAnalysis/code.txt");
-        Token t = null;
-        while ((t = lexicon.nextToken()) != null) {
-            System.out.println(t.toString());
-        }
+        Synthetic synthetic = new Synthetic(lexicon);
+        synthetic.S();
     }
 }
