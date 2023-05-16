@@ -13,6 +13,7 @@ public class Token {
     public static int RAISED_CAIO_TYPE = 9;
     public static int TOKEN_A = 10;
     public static int RING_0 = 11;
+    public static int STRING_TYPE = 12;
     public static int END_CODE_TYPE = 99;
 
     private int type;
@@ -58,6 +59,8 @@ public class Token {
                 return this.lexeme + " - TOKEN A";
             case 11:
                 return this.lexeme + " - RING 0";
+            case 12:
+                return this.lexeme + " - STRING";
             case 99:
                 return this.lexeme + " - END_CODE";
         }

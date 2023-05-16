@@ -100,6 +100,9 @@ public class Lexicon {
                     } else if (c == 'ç') {
                         lexema.append(c);
                         state = 18;
+                    } else if (c == '"') {
+                        lexema.append(c);
+                        state = 22;
                     } else if (c == '$') {
                         lexema.append(c);
                         state = 99;
@@ -269,6 +272,18 @@ public class Lexicon {
                 case 21:
                     this.back();
                     return new Token(lexema.toString(), Token.RING_0);
+                case 22:
+                    if(c == '"'){
+                        lexema.append(c);
+                        state = 23;
+                    }else{
+                        lexema.append(c);
+                        state = 22;
+                    }
+                    break;
+                case 23:
+                    this.back();
+                    return new Token(lexema.toString(), Token.STRING_TYPE);
                 case 99:
                     return new Token(lexema.toString(), Token.END_CODE_TYPE);
             }
