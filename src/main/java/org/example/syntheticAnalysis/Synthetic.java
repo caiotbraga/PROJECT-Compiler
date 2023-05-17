@@ -46,15 +46,36 @@ public class Synthetic {
     }
 
     private void CS() {
-        if(token.getType() == Token.DOUBLE_TYPE || token.getType() == Token.INT_TYPE ||
-        token.getType() == Token.CHAR_TYPE){
-            
+        if(token.getType() == Token.DOUBLE_TYPE || token.getType() == Token.INT_TYPE ||    //TIRAR DUVIDA SE PODE SER TOKEN.TIPO OU TEM Q SER EQUALS("EXEMPLO")
+           token.getType() == Token.CHAR_TYPE   || token.getType() == Token.STRING_TYPE || token.getType() == Token.IDENTIFIER_TYPE){ //eu(caio) acho que nao pois se o lexema for igual a 
+            this.B();                                                                                                                   //int, double... ele possuira o token do seu tipo
+            this.CS();
+        }else{
         }
-        this.B();
-        this.CS();
     }
 
     private void B() {
+        if(token.getType() == token.IDENTIFIER_TYPE){
+            this.assignment();
+        }else if(token.getType() == Token.CHAR_TYPE ||
+                 token.getType() == Token.DOUBLE_TYPE || 
+                 token.getType() == Token.INT_TYPE ||
+                 token.getType() == Token.STRING_TYPE ){
+            this.declaration();
+        }else{
+            throw new 
+        }
+    }
+
+    private void declaration() { //no código do professor o primeiro if é redundante
+        if(!(token.getType() == Token.CHAR_TYPE ||
+                 token.getType() == Token.DOUBLE_TYPE || 
+                 token.getType() == Token.INT_TYPE ||
+                 token.getType() == Token.STRING_TYPE))
+    }
+
+    private void assignment() {
+
     }
     
 }
