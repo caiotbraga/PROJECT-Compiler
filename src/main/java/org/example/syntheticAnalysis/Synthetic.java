@@ -63,15 +63,20 @@ public class Synthetic {
                  token.getType() == Token.STRING_TYPE ){
             this.declaration();
         }else{
-            throw new 
+            throw new RuntimeException("ERROR! Something is wrong when you tried to declarate your variable near " +token.getLexeme());
         }
     }
 
     private void declaration() { //no código do professor o primeiro if é redundante
-        if(!(token.getType() == Token.CHAR_TYPE ||
-                 token.getType() == Token.DOUBLE_TYPE || 
-                 token.getType() == Token.INT_TYPE ||
-                 token.getType() == Token.STRING_TYPE))
+        this.token = this.lexicon.nextToken();
+        if(!(token.getType() == Token.IDENTIFIER_TYPE)){
+            throw new RuntimeException("ERROR! You shall declarate your identifier after his type! near"+this.token.getLexeme());
+        }
+        this.token = this.lexicon.nextToken();
+        if(!(token.getLexeme().equals(";"))){
+            throw new RuntimeException("ERROR! You forgot to put the ; after the declaration of the variable near "+this.token.getLexeme());
+        }
+        this.token = this.lexicon.nextToken();
     }
 
     private void assignment() {
