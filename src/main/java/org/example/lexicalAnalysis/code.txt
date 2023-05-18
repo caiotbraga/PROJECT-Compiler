@@ -1,2 +1,5 @@
-String Caio = "teste";
+main(){
+    int caio;
+    caio = 1000;
+}
 $

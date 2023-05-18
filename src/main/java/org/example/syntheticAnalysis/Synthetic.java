@@ -42,12 +42,12 @@ public class Synthetic {
         if(!token.getLexeme().equals("}")){
             throw new RuntimeException("You need close the method declaration with *}* !");
         }
-
+        this.token = this.lexicon.nextToken();
     }
 
     private void CS() {
-        if(token.getType() == Token.DOUBLE_TYPE || token.getType() == Token.INT_TYPE ||    //TIRAR DUVIDA SE PODE SER TOKEN.TIPO OU TEM Q SER EQUALS("EXEMPLO")
-           token.getType() == Token.CHAR_TYPE   || token.getType() == Token.STRING_TYPE || token.getType() == Token.IDENTIFIER_TYPE){ //eu(caio) acho que nao pois se o lexema for igual a 
+        if(token.getLexeme().equals("double") || token.getLexeme().equals("int") ||    //TIRAR DUVIDA SE PODE SER TOKEN.TIPO OU TEM Q SER EQUALS("EXEMPLO")
+        token.getLexeme().equals("char")   || token.getLexeme().equals("String") || token.getType() == Token.IDENTIFIER_TYPE){ //eu(caio) acho que nao pois se o lexema for igual a 
             this.B();                                                                                                                   //int, double... ele possuira o token do seu tipo
             this.CS();
         }else{
@@ -57,10 +57,8 @@ public class Synthetic {
     private void B() {
         if(token.getType() == token.IDENTIFIER_TYPE){
             this.assignment();
-        }else if(token.getType() == Token.CHAR_TYPE ||
-                 token.getType() == Token.DOUBLE_TYPE || 
-                 token.getType() == Token.INT_TYPE ||
-                 token.getType() == Token.STRING_TYPE ){
+        }else if(token.getLexeme().equals("double") || token.getLexeme().equals("int") ||    //TIRAR DUVIDA SE PODE SER TOKEN.TIPO OU TEM Q SER EQUALS("EXEMPLO")
+                 token.getLexeme().equals("char")   || token.getLexeme().equals("String") ){
             this.declaration();
         }else{
             throw new RuntimeException("ERROR! Something is wrong when you tried to declarate your variable near " +token.getLexeme());
@@ -80,16 +78,50 @@ public class Synthetic {
     }
 
     private void assignment() {
-        if(!(token.getType() == Token.ASSIGNMENT_OPERATOR_TYPE)){
+        if(!(token.getType() == Token.IDENTIFIER_TYPE)){
             throw new RuntimeException("ERROR! You forgot to put the assignment operator near "+this.token.getLexeme());
-        }else{
-            this.token = this.lexicon.nextToken();
-            this.E();
         }
+        this.token = this.lexicon.nextToken();
+        if(!(token.getType() == Token.ASSIGNMENT_OPERATOR_TYPE)){
+            throw new RuntimeException("ERROR! You forgot the assignment operator near"+this.token.getLexeme());
+        }
+        this.token = this.lexicon.nextToken();
+        this.E();
+        if(!this.token.getLexeme().equals(";")){
+            throw new RuntimeException("ERROR! Assignment error near "+this.token.getLexeme());
+        }
+        this.token = this.lexicon.nextToken(); 
     }
 
-    private void E() {
-        
+    private void E(){
+        this.T();
+        this.El();
+    }
+    
+    private void El(){
+        if(this.token.getType() == Token.ARITHMETIC_OPERATOR_TYPE){
+            this.OP();
+            this.T();
+            this.El();
+        }else{        
+        }
+    }
+    
+    private void T(){
+        if(this.token.getType() == Token.IDENTIFIER_TYPE || 
+                  this.token.getType() == Token.INT_TYPE || this.token.getType() == Token.DOUBLE_TYPE){
+            this.token = this.lexicon.nextToken();
+        }else{
+            throw new RuntimeException("ERROR! It should be a number or an identifier near"+this.token.getLexeme());
+        }
+    }
+    
+    private void OP(){
+        if(this.token.getType() == Token.ARITHMETIC_OPERATOR_TYPE){
+            this.token = this.lexicon.nextToken();
+        }else{
+            throw new RuntimeException("ERROR! It should be an arithmetic operator type near"+this.token.getLexeme());
+        }
     }
     
 }
