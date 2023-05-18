@@ -80,7 +80,16 @@ public class Synthetic {
     }
 
     private void assignment() {
+        if(!(token.getType() == Token.ASSIGNMENT_OPERATOR_TYPE)){
+            throw new RuntimeException("ERROR! You forgot to put the assignment operator near "+this.token.getLexeme());
+        }else{
+            this.token = this.lexicon.nextToken();
+            this.E();
+        }
+    }
 
+    private void E() {
+        
     }
     
 }
