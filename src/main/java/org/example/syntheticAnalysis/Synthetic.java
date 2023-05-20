@@ -43,18 +43,33 @@ public class Synthetic {
         }
         this.token = this.lexicon.nextToken();
         this.VariableDec();
+        this.Command();
         if(!token.getLexeme().equals("}")){
             throw new RuntimeException("You need close the method declaration with *}* !");
         }
         this.token = this.lexicon.nextToken();
     }
 
+    private void Command() {
+    }
+
     private void VariableDec() {
-         if((!token.getLexeme().equals("int"))){
-            throw new RuntimeException("ERROR! It shall be an identifier type!");
+        if(equalsType(token.getLexeme())){
+            this.token = this.lexicon.nextToken();
+            if(!(token.getType() == Token.IDENTIFIER_TYPE)){
+                throw new RuntimeException("ERROR! It shall be an identifier type near"+this.token.getLexeme());
+            }else{
+                if(!(token.getLexeme().equals(";"))){
+                    throw new RuntimeException("ERROR! You forgot to put the ; after the declaration of the variable near "+this.token.getLexeme());
+                }
+                this.token = this.lexicon.nextToken();
+                if(equalsType(token.getLexeme())){
+                    this.VariableDec();
+                }
+            }
+        }else{
+            throw new RuntimeException("ERROR! It shall be an declaration type!");
         }
-        this.token = this.lexicon.nextToken();
-        if()
         //     this.assignment();
         // }else if(token.getLexeme().equals("double") || token.getLexeme().equals("int") ||    //TIRAR DUVIDA SE PODE SER TOKEN.TIPO OU TEM Q SER EQUALS("EXEMPLO")
         //          token.getLexeme().equals("char")   || token.getLexeme().equals("String") ){
