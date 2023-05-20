@@ -132,7 +132,8 @@ public class Lexicon {
                                 newLexeme.compareTo("else") == 0 ||
                                 newLexeme.compareTo("while") == 0 ||
                                 newLexeme.compareTo("for") == 0 ||
-                                newLexeme.compareTo("main") == 0 
+                                newLexeme.compareTo("main") == 0 ||
+                                newLexeme.compareTo("Boolean") == 0 
                                 ) {
                             return new Token(lexema.toString(), Token.RESERVED_WORD_TYPE);
                         }

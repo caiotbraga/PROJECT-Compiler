@@ -13,8 +13,12 @@ public class Synthetic {
 
     public void S() {
         this.token = this.lexicon.nextToken();
+        if(!token.getLexeme().equals("int")){
+            throw new RuntimeException("You first code word shall be *int* !");
+        }
+        this.token = this.lexicon.nextToken();
         if(!token.getLexeme().equals("main")){
-            throw new RuntimeException("You first code word shall be *main* !");
+            throw new RuntimeException("You second code word shall be *main* !");
         }
         this.token = this.lexicon.nextToken();
         if(!token.getLexeme().equals("(")){
@@ -25,7 +29,7 @@ public class Synthetic {
             throw new RuntimeException("After main you need close the parentheses *(* !");
         }
         this.token = this.lexicon.nextToken();
-        this.A();
+        this.Block();
         if(this.token.getLexeme().equals("$")){
             System.out.println("Well done! Your code don't have erros!");
         }else{
@@ -33,37 +37,43 @@ public class Synthetic {
         }
     }
 
-    private void A() {
+    private void Block() {
         if(!token.getLexeme().equals("{")){
             throw new RuntimeException("You need open the method declaration with *{* !");
         }
         this.token = this.lexicon.nextToken();
-        this.CS();
+        this.VariableDec();
         if(!token.getLexeme().equals("}")){
             throw new RuntimeException("You need close the method declaration with *}* !");
         }
         this.token = this.lexicon.nextToken();
     }
 
+    private void VariableDec() {
+         if((!token.getLexeme().equals("int"))){
+            throw new RuntimeException("ERROR! It shall be an identifier type!");
+        }
+        this.token = this.lexicon.nextToken();
+        if()
+        //     this.assignment();
+        // }else if(token.getLexeme().equals("double") || token.getLexeme().equals("int") ||    //TIRAR DUVIDA SE PODE SER TOKEN.TIPO OU TEM Q SER EQUALS("EXEMPLO")
+        //          token.getLexeme().equals("char")   || token.getLexeme().equals("String") ){
+        //     this.declaration();
+        // }else{
+        //     throw new RuntimeException("ERROR! Something is wrong when you tried to declarate your variable near " +token.getLexeme());
+        // }
+    }
+
     private void CS() {
-        if(token.getLexeme().equals("double") || token.getLexeme().equals("int") ||    //TIRAR DUVIDA SE PODE SER TOKEN.TIPO OU TEM Q SER EQUALS("EXEMPLO")
-        token.getLexeme().equals("char")   || token.getLexeme().equals("String") || token.getType() == Token.IDENTIFIER_TYPE){ //eu(caio) acho que nao pois se o lexema for igual a 
-            this.B();                                                                                                                   //int, double... ele possuira o token do seu tipo
+        if(token.getLexeme().equals("double") || token.getLexeme().equals("int") || 
+        token.getLexeme().equals("char")   || token.getLexeme().equals("String") || token.getType() == Token.IDENTIFIER_TYPE){ 
+            this.VariableDec();                                                                                                                   
             this.CS();
         }else{
         }
     }
 
-    private void B() {
-        if(token.getType() == token.IDENTIFIER_TYPE){
-            this.assignment();
-        }else if(token.getLexeme().equals("double") || token.getLexeme().equals("int") ||    //TIRAR DUVIDA SE PODE SER TOKEN.TIPO OU TEM Q SER EQUALS("EXEMPLO")
-                 token.getLexeme().equals("char")   || token.getLexeme().equals("String") ){
-            this.declaration();
-        }else{
-            throw new RuntimeException("ERROR! Something is wrong when you tried to declarate your variable near " +token.getLexeme());
-        }
-    }
+   
 
     private void declaration() { //no código do professor o primeiro if é redundante
         this.token = this.lexicon.nextToken();
@@ -124,4 +134,10 @@ public class Synthetic {
         }
     }
     
+    private boolean equalsType(String lexeme){
+        if(lexeme.equals("int") || lexeme.equals("double") || lexeme.equals("char") || lexeme.equals("float") || lexeme.equals("String") ){
+            return true;
+        }
+        return false;
+    }
 }
