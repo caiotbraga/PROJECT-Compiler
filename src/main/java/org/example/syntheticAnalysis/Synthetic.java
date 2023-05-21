@@ -3,15 +3,15 @@ package org.example.syntheticAnalysis;
 import org.example.lexicalAnalysis.Lexicon;
 import org.example.lexicalAnalysis.Token;
 
-public class Synthetic {
+public class synthetic {
     private Lexicon lexicon;
     private Token token;
 
-    public Synthetic(Lexicon lex){
+    public synthetic(Lexicon lex){
         this.lexicon = lex;
     }
 
-    public void S() {
+    public void s() {
         this.token = this.lexicon.nextToken();
         if(!token.getLexeme().equals("int")){
             throw new RuntimeException("You first code word shall be *int* !");
@@ -29,7 +29,7 @@ public class Synthetic {
             throw new RuntimeException("After main you need close the parentheses *(* !");
         }
         this.token = this.lexicon.nextToken();
-        this.Block();
+        this.block();
         if(this.token.getLexeme().equals("$")){
             System.out.println("Well done! Your code don't have erros!");
         }else{
@@ -37,23 +37,20 @@ public class Synthetic {
         }
     }
 
-    private void Block() {
+    private void block() {
         if(!token.getLexeme().equals("{")){
             throw new RuntimeException("You need open the method declaration with *{* !");
         }
         this.token = this.lexicon.nextToken();
-        this.VariableDec();
-        this.Command();
+        this.variableDec();
+        this.command();
         if(!token.getLexeme().equals("}")){
             throw new RuntimeException("You need close the method declaration with *}* !");
         }
         this.token = this.lexicon.nextToken();
     }
 
-    private void Command() {
-    }
-
-    private void VariableDec() {
+    private void variableDec() {
         if(equalsType(token.getLexeme())){
             this.token = this.lexicon.nextToken();
             if(!(token.getType() == Token.IDENTIFIER_TYPE)){
@@ -64,7 +61,7 @@ public class Synthetic {
                 }
                 this.token = this.lexicon.nextToken();
                 if(equalsType(token.getLexeme())){
-                    this.VariableDec();
+                    this.variableDec();
                 }
             }
         }else{
@@ -79,10 +76,35 @@ public class Synthetic {
         // }
     }
 
+    private void command() { //pode entrar em atribuição que então vai precisar verificar se o primeiro é do tipo identificador 
+        if(this.token.getType() == Token.IDENTIFIER_TYPE){
+            this.basicCommand();
+        }else if(this.token.getLexeme().equals("while")){
+            this.interaction();
+        }else{
+            this.selectionStructure();
+        }
+        
+    }
+
+    private void selectionStructure() {
+    }
+
+    private void interaction() {
+        this.token = this.lexicon.nextToken();
+        if(token.getLexeme().equals("()")){
+            throw new RuntimeException("");
+        }
+    }
+
+    private void basicCommand() {
+        
+    }
+
     private void CS() {
         if(token.getLexeme().equals("double") || token.getLexeme().equals("int") || 
         token.getLexeme().equals("char")   || token.getLexeme().equals("String") || token.getType() == Token.IDENTIFIER_TYPE){ 
-            this.VariableDec();                                                                                                                   
+            this.variableDec();                                                                                                                   
             this.CS();
         }else{
         }
