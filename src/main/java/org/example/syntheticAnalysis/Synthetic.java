@@ -89,6 +89,8 @@ public class synthetic {
     }
 
     private void selectionStructure() {
+        this.token = this.lexicon.nextToken();
+        
     }
 
     private void interaction() {
@@ -107,6 +109,8 @@ public class synthetic {
     }
 
     private void relationalExpression() {
+        this.arithmeticExpression();
+        this.relationalOperator();
         this.arithmeticExpression();
     }
 
@@ -204,7 +208,7 @@ public class synthetic {
         }
     }
 
-    private void OP(){
+    private void relationalOperator(){
         if(this.token.getType() == Token.ARITHMETIC_OPERATOR_TYPE){
             this.token = this.lexicon.nextToken();
         }else{
