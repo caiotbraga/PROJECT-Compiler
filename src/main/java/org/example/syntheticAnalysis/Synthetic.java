@@ -56,6 +56,7 @@ public class synthetic {
             if(!(token.getType() == Token.IDENTIFIER_TYPE)){
                 throw new RuntimeException("ERROR! It shall be an identifier type near"+this.token.getLexeme());
             }else{
+                this.token = this.lexicon.nextToken();
                 if(!(token.getLexeme().equals(";"))){
                     throw new RuntimeException("ERROR! You forgot to put the ; after the declaration of the variable near "+this.token.getLexeme());
                 }
@@ -77,11 +78,11 @@ public class synthetic {
     }
 
     private void command() { //pode entrar em atribuição que então vai precisar verificar se o primeiro é do tipo identificador 
-        if(this.token.getType() == Token.IDENTIFIER_TYPE){
+        if(this.token.getType() == Token.IDENTIFIER_TYPE || equalsType(token.getLexeme()) || token.getLexeme().equals("while") || token.getLexeme().equals("if")){
             this.basicCommand();
         }else if(this.token.getLexeme().equals("while")){
             this.interaction();
-        }else{
+        }else if(this.token.getLexeme().equals("if")){
             this.selectionStructure();
         }
         
@@ -92,23 +93,40 @@ public class synthetic {
 
     private void interaction() {
         this.token = this.lexicon.nextToken();
-        if(token.getLexeme().equals("()")){
-            throw new RuntimeException("");
+        if(!(token.getLexeme().equals("("))){
+            throw new RuntimeException("ERROR! It shall be an ( near "+this.token.getLexeme());
         }
+        this.token = this.lexicon.nextToken();
+        this.relationalExpression();
+        if(!(token.getLexeme().equals(")"))){
+            throw new RuntimeException("ERROR! It shall be an ) near "+this.token.getLexeme());
+        }
+        if(!(token.getLexeme().equals("{"))){
+            throw new RuntimeException("ERROR! It shall be an ) near "+this.token.getLexeme());
+        }
+    }
+
+    private void relationalExpression() {
+        this.arithmeticExpression();
     }
 
     private void basicCommand() {
-        
-    }
-
-    private void CS() {
-        if(token.getLexeme().equals("double") || token.getLexeme().equals("int") || 
-        token.getLexeme().equals("char")   || token.getLexeme().equals("String") || token.getType() == Token.IDENTIFIER_TYPE){ 
-            this.variableDec();                                                                                                                   
-            this.CS();
+        this.token = this.lexicon.nextToken();
+        if(this.token.getLexeme().equals("=")){
+            this.assignment();
         }else{
+            this.block();
         }
     }
+
+    // private void CS() {
+    //     if(token.getLexeme().equals("double") || token.getLexeme().equals("int") || 
+    //     token.getLexeme().equals("char")   || token.getLexeme().equals("String") || token.getType() == Token.IDENTIFIER_TYPE){ 
+    //         this.variableDec();                                                                                                                   
+    //         this.CS();
+    //     }else{
+    //     }
+    // }
 
    
 
@@ -125,44 +143,67 @@ public class synthetic {
     }
 
     private void assignment() {
-        if(!(token.getType() == Token.IDENTIFIER_TYPE)){
-            throw new RuntimeException("ERROR! You forgot to put the assignment operator near "+this.token.getLexeme());
-        }
+        // if(!(token.getType() == Token.IDENTIFIER_TYPE)){
+        //     throw new RuntimeException("ERROR! You forgot to put the assignment operator near "+this.token.getLexeme());
+        // }
         this.token = this.lexicon.nextToken();
-        if(!(token.getType() == Token.ASSIGNMENT_OPERATOR_TYPE)){
-            throw new RuntimeException("ERROR! You forgot the assignment operator near"+this.token.getLexeme());
-        }
-        this.token = this.lexicon.nextToken();
-        this.E();
+        // if(!(token.getType() == Token.ASSIGNMENT_OPERATOR_TYPE)){
+        //     throw new RuntimeException("ERROR! You forgot the assignment operator near"+this.token.getLexeme());
+        // }
+        this.arithmeticExpression();
         if(!this.token.getLexeme().equals(";")){
             throw new RuntimeException("ERROR! Assignment error near "+this.token.getLexeme());
         }
         this.token = this.lexicon.nextToken(); 
     }
 
-    private void E(){
-        this.T();
-        this.El();
-    }
-    
-    private void El(){
-        if(this.token.getType() == Token.ARITHMETIC_OPERATOR_TYPE){
-            this.OP();
-            this.T();
-            this.El();
-        }else{        
+    private void arithmeticExpression(){
+        this.term();
+        if(this.token.getLexeme().equals("+") || this.token.getLexeme().equals("-")){
+            this.sum();
+            this.arithmeticExpression();
         }
     }
     
-    private void T(){
-        if(this.token.getType() == Token.IDENTIFIER_TYPE || 
-                  this.token.getType() == Token.INT_TYPE || this.token.getType() == Token.DOUBLE_TYPE){
-            this.token = this.lexicon.nextToken();
+    private void sum() {
+        this.token = this.lexicon.nextToken(); 
+    }
+
+    // private void El(){
+    //     if(this.token.getType() == Token.ARITHMETIC_OPERATOR_TYPE){
+    //         this.OP();
+    //         this.term();
+    //         this.El();
+    //     }else{        
+    //     }
+    // }
+    
+    private void term(){
+        this.factor();
+        if(this.token.getLexeme().equals("*") || this.token.getLexeme().equals("/")){
+            this.mult();
+            this.term();
+        }
+        // if(this.token.getType() == Token.IDENTIFIER_TYPE || 
+        //           this.token.getType() == Token.INT_TYPE || this.token.getType() == Token.DOUBLE_TYPE){
+        //     this.token = this.lexicon.nextToken();
+        // }else{
+        //     throw new RuntimeException("ERROR! It should be a number or an identifier near"+this.token.getLexeme());
+        // }
+    }
+    
+    private void mult() {
+        this.token = this.lexicon.nextToken(); 
+    }
+
+    private void factor() {
+        if(this.token.getType() == Token.DOUBLE_TYPE || this.token.getType() == Token.INT_TYPE || this.token.getType() == Token.IDENTIFIER_TYPE){
+            this.token = this.lexicon.nextToken(); 
         }else{
-            throw new RuntimeException("ERROR! It should be a number or an identifier near"+this.token.getLexeme());
+            this.arithmeticExpression();
         }
     }
-    
+
     private void OP(){
         if(this.token.getType() == Token.ARITHMETIC_OPERATOR_TYPE){
             this.token = this.lexicon.nextToken();
