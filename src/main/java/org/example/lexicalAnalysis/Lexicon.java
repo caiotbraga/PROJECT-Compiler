@@ -219,21 +219,22 @@ public class Lexicon {
                     } else if (c == '=') {
                         lexema.append(c);
                         state = 10;
-                    } else if (c == '<') {
-                        this.back();
-                        state = 11;
                     } else {
-                        throw new RuntimeException(
-                                "ERROR: Incorrect operator relational format! --> \"" + lexema.toString() + "\"");
-                    }
+                        this.back();
+                        state = 10;
+                    } 
+                    // else {
+                    //     throw new RuntimeException(
+                    //             "ERROR: Incorrect operator relational format! --> \"" + lexema.toString() + "\"");
+                    // }
                     break;
                 case 15:
                     if (c == '=') {
                         lexema.append(c);
-                        state = 11;
+                        state = 10;
                     } else if (c != '=') {
                         this.back();
-                        state = 11;
+                        state = 10;
                     } else {
                         throw new RuntimeException(
                                 "ERROR: Incorrect operator relational format! --> \"" + lexema.toString() + "\"");

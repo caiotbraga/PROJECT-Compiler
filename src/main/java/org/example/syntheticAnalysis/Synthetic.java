@@ -78,14 +78,18 @@ public class synthetic {
     }
 
     private void command() { //pode entrar em atribuição que então vai precisar verificar se o primeiro é do tipo identificador 
-        if(this.token.getType() == Token.IDENTIFIER_TYPE || equalsType(token.getLexeme()) || token.getLexeme().equals("while") || token.getLexeme().equals("if")){
-            this.basicCommand();
-        }else if(this.token.getLexeme().equals("while")){
+        if(this.token.getLexeme().equals("while")){
             this.interaction();
-        }else if(this.token.getLexeme().equals("if")){
+        }
+        if(this.token.getLexeme().equals("if")){
             this.selectionStructure();
         }
-        
+        if(this.token.getType() == Token.IDENTIFIER_TYPE || equalsType(token.getLexeme()) || token.getLexeme().equals("while") || token.getLexeme().equals("if")){
+            this.basicCommand();
+        }
+        if(this.token.getLexeme().equals("while") || this.token.getLexeme().equals("if") || this.token.getType() == Token.IDENTIFIER_TYPE || equalsType(token.getLexeme()) ){
+            this.command();
+        }
     }
 
     private void selectionStructure() {
@@ -103,9 +107,16 @@ public class synthetic {
         if(!(token.getLexeme().equals(")"))){
             throw new RuntimeException("ERROR! It shall be an ) near "+this.token.getLexeme());
         }
+        this.token = this.lexicon.nextToken();
         if(!(token.getLexeme().equals("{"))){
-            throw new RuntimeException("ERROR! It shall be an ) near "+this.token.getLexeme());
+            throw new RuntimeException("ERROR! It shall be an { near "+this.token.getLexeme());
         }
+        this.token = this.lexicon.nextToken();
+        this.command();
+        if(!(token.getLexeme().equals("}"))){
+            throw new RuntimeException("ERROR! It shall be an } near "+this.token.getLexeme());
+        }
+        this.token = this.lexicon.nextToken();
     }
 
     private void relationalExpression() {
@@ -209,7 +220,7 @@ public class synthetic {
     }
 
     private void relationalOperator(){
-        if(this.token.getType() == Token.ARITHMETIC_OPERATOR_TYPE){
+        if(this.token.getType() == Token.RELATIONAL_OPERATOR_TYPE){
             this.token = this.lexicon.nextToken();
         }else{
             throw new RuntimeException("ERROR! It should be an arithmetic operator type near"+this.token.getLexeme());

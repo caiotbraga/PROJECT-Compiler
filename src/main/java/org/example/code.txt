@@ -1,5 +1,11 @@
 int main(){
     int caio;
-    caio = 1000;
+    caio = 100;
+    while(3>5){
+        while(a < b){
+            a = b;
+        }
+        caio =100;
+     }
 }
 $
