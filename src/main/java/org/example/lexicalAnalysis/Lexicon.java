@@ -213,10 +213,11 @@ public class Lexicon {
                     }
                     break;
                 case 14:
-                    if (c == '>') {
-                        lexema.append(c);
-                        state = 10;
-                    } else if (c == '=') {
+                    if(c == '<'){
+                        throw new RuntimeException(
+                            "ERROR: Incorrect operator relational format! --> \"" + lexema.toString() + "\"");
+                    }
+                    if (c == '>' || c == '=') {
                         lexema.append(c);
                         state = 10;
                     } else {

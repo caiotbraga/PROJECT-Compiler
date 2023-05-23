@@ -1,11 +1,15 @@
 int main(){
     int caio;
+    int andre;
     caio = 100;
-    while(3>5){
-        while(a < b){
-            a = b;
+    andre = 100;
+    if(5 > 3){
+        caio = 200;
+        if(caio == 200){
+            andre = 300;
         }
-        caio =100;
-     }
+    }else{
+        caio = 500;
+    }
 }
 $

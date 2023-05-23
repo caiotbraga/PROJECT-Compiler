@@ -28,7 +28,6 @@ public class synthetic {
         if(!token.getLexeme().equals(")")){
             throw new RuntimeException("After main you need close the parentheses *(* !");
         }
-        this.token = this.lexicon.nextToken();
         this.block();
         if(this.token.getLexeme().equals("$")){
             System.out.println("Well done! Your code don't have erros!");
@@ -38,6 +37,7 @@ public class synthetic {
     }
 
     private void block() {
+        this.token = this.lexicon.nextToken();
         if(!token.getLexeme().equals("{")){
             throw new RuntimeException("You need open the method declaration with *{* !");
         }
@@ -68,13 +68,6 @@ public class synthetic {
         }else{
             throw new RuntimeException("ERROR! It shall be an declaration type!");
         }
-        //     this.assignment();
-        // }else if(token.getLexeme().equals("double") || token.getLexeme().equals("int") ||    //TIRAR DUVIDA SE PODE SER TOKEN.TIPO OU TEM Q SER EQUALS("EXEMPLO")
-        //          token.getLexeme().equals("char")   || token.getLexeme().equals("String") ){
-        //     this.declaration();
-        // }else{
-        //     throw new RuntimeException("ERROR! Something is wrong when you tried to declarate your variable near " +token.getLexeme());
-        // }
     }
 
     private void command() { //pode entrar em atribuição que então vai precisar verificar se o primeiro é do tipo identificador 
@@ -92,11 +85,42 @@ public class synthetic {
         }
     }
 
+    //if 
     private void selectionStructure() {
         this.token = this.lexicon.nextToken();
-        
+        if(!(token.getLexeme().equals("("))){
+            throw new RuntimeException("ERROR! It shall be an ( near "+this.token.getLexeme());
+        }
+        this.token = this.lexicon.nextToken();
+        this.relationalExpression();
+        if(!(token.getLexeme().equals(")"))){
+            throw new RuntimeException("ERROR! It shall be an ) near "+this.token.getLexeme());
+        }
+        this.token = this.lexicon.nextToken();
+        if(!(token.getLexeme().equals("{"))){
+            throw new RuntimeException("ERROR! It shall be an { near "+this.token.getLexeme());
+        }
+        this.token = this.lexicon.nextToken();
+        this.command();
+        if(!(token.getLexeme().equals("}"))){
+            throw new RuntimeException("ERROR! It shall be an } near "+this.token.getLexeme());
+        }
+        this.token = this.lexicon.nextToken();
+        if(token.getLexeme().equals("else")){
+            this.token = this.lexicon.nextToken();
+            if(!(token.getLexeme().equals("{"))){
+                throw new RuntimeException("ERROR! It shall be an { near "+this.token.getLexeme());
+            }
+            this.token = this.lexicon.nextToken();
+            this.command();
+            if(!(token.getLexeme().equals("}"))){
+                throw new RuntimeException("ERROR! It shall be an } near "+this.token.getLexeme());
+            }
+            this.token = this.lexicon.nextToken();
+        }
     }
 
+    //while
     private void interaction() {
         this.token = this.lexicon.nextToken();
         if(!(token.getLexeme().equals("("))){
@@ -134,37 +158,8 @@ public class synthetic {
         }
     }
 
-    // private void CS() {
-    //     if(token.getLexeme().equals("double") || token.getLexeme().equals("int") || 
-    //     token.getLexeme().equals("char")   || token.getLexeme().equals("String") || token.getType() == Token.IDENTIFIER_TYPE){ 
-    //         this.variableDec();                                                                                                                   
-    //         this.CS();
-    //     }else{
-    //     }
-    // }
-
-   
-
-    private void declaration() { //no código do professor o primeiro if é redundante
-        this.token = this.lexicon.nextToken();
-        if(!(token.getType() == Token.IDENTIFIER_TYPE)){
-            throw new RuntimeException("ERROR! You shall declarate your identifier after his type! near"+this.token.getLexeme());
-        }
-        this.token = this.lexicon.nextToken();
-        if(!(token.getLexeme().equals(";"))){
-            throw new RuntimeException("ERROR! You forgot to put the ; after the declaration of the variable near "+this.token.getLexeme());
-        }
-        this.token = this.lexicon.nextToken();
-    }
-
     private void assignment() {
-        // if(!(token.getType() == Token.IDENTIFIER_TYPE)){
-        //     throw new RuntimeException("ERROR! You forgot to put the assignment operator near "+this.token.getLexeme());
-        // }
         this.token = this.lexicon.nextToken();
-        // if(!(token.getType() == Token.ASSIGNMENT_OPERATOR_TYPE)){
-        //     throw new RuntimeException("ERROR! You forgot the assignment operator near"+this.token.getLexeme());
-        // }
         this.arithmeticExpression();
         if(!this.token.getLexeme().equals(";")){
             throw new RuntimeException("ERROR! Assignment error near "+this.token.getLexeme());
@@ -183,15 +178,6 @@ public class synthetic {
     private void sum() {
         this.token = this.lexicon.nextToken(); 
     }
-
-    // private void El(){
-    //     if(this.token.getType() == Token.ARITHMETIC_OPERATOR_TYPE){
-    //         this.OP();
-    //         this.term();
-    //         this.El();
-    //     }else{        
-    //     }
-    // }
     
     private void term(){
         this.factor();
@@ -199,12 +185,6 @@ public class synthetic {
             this.mult();
             this.term();
         }
-        // if(this.token.getType() == Token.IDENTIFIER_TYPE || 
-        //           this.token.getType() == Token.INT_TYPE || this.token.getType() == Token.DOUBLE_TYPE){
-        //     this.token = this.lexicon.nextToken();
-        // }else{
-        //     throw new RuntimeException("ERROR! It should be a number or an identifier near"+this.token.getLexeme());
-        // }
     }
     
     private void mult() {
