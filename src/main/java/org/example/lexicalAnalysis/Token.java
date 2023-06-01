@@ -67,6 +67,40 @@ public class Token {
         return "";
     }
 
+    public String secondToString() {
+        switch (this.type) {
+            case 0:
+                return "INT";
+            case 1:
+                return "DOUBLE";
+            case 2:
+                return "CHAR";
+            case 3:
+                return "IDENTIFIER";
+            case 4:
+                return "RELATIONAL OPERATOR";
+            case 5:
+                return "ARITHMETIC OPERATOR";
+            case 6:
+                return "SPECIAL CHARACTER";
+            case 7:
+                return "RESERVED WORD";
+            case 8:
+                return "ASSIGNMENT OPERATOR";
+            case 9:
+                return "RAISED CAIO";
+            case 10:
+                return "TOKEN A";
+            case 11:
+                return "RING 0";
+            case 12:
+                return "STRING";
+            case 99:
+                return "END_CODE";
+        }
+        return "";
+    }
+
     public String stringText() {
         return this.lexeme.toString();
     }

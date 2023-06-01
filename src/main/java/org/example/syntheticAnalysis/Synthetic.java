@@ -2,12 +2,16 @@ package org.example.syntheticAnalysis;
 
 import org.example.lexicalAnalysis.Lexicon;
 import org.example.lexicalAnalysis.Token;
+import org.example.semanticAnalysis.SinglyLinkedList;
+import org.example.semanticAnalysis.SinglyListNode;
 
-public class synthetic {
+public class Synthetic {
     private Lexicon lexicon;
     private Token token;
+    private SinglyLinkedList[] typeList = new SinglyLinkedList[10];
+    private int i = 0;
 
-    public synthetic(Lexicon lex){
+    public Synthetic(Lexicon lex){
         this.lexicon = lex;
     }
 
@@ -51,11 +55,16 @@ public class synthetic {
     }
 
     private void variableDec() {
+        String type = getTypeUsingToken(token.getLexeme());
         if(equalsType(token.getLexeme())){
             this.token = this.lexicon.nextToken();
             if(!(token.getType() == Token.IDENTIFIER_TYPE)){
                 throw new RuntimeException("ERROR! It shall be an identifier type near"+this.token.getLexeme());
             }else{
+                typeList[i] = new SinglyLinkedList();
+                typeList[i].addFirst(token.getLexeme());
+                typeList[i].getHead().setNext(new SinglyListNode(type));
+                i++;
                 this.token = this.lexicon.nextToken();
                 if(!(token.getLexeme().equals(";"))){
                     throw new RuntimeException("ERROR! You forgot to put the ; after the declaration of the variable near "+this.token.getLexeme());
@@ -212,5 +221,19 @@ public class synthetic {
             return true;
         }
         return false;
+    }
+
+    public String getTypeUsingToken(String type){
+        if(type.compareTo("int") == 0){
+            return "INT";
+        }else if(type.compareTo("Double") == 0){
+            return "DOUBLE";
+        }else if(type.compareTo("char") == 0){
+            return "CHAR";
+        }else if(type.compareTo("String") == 0){
+            return "STRING";
+        }else{
+            throw new RuntimeException("ERROR!");
+        }
     }
 }
