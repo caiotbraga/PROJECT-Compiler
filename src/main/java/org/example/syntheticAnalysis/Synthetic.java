@@ -169,11 +169,23 @@ public class Synthetic {
 
     private void assignment() {
         this.token = this.lexicon.nextToken();
-        this.arithmeticExpression();
+        String tokenType = lexicon.back();
+        if(token.getType() == Token.DOUBLE_TYPE || token.getType() == Token.INT_TYPE){
+            this.arithmeticExpression();
+        }else if (token.getType() == Token.STRING_TYPE){
+            this.assignmentString();
+        }
+        
         if(!this.token.getLexeme().equals(";")){
             throw new RuntimeException("ERROR! Assignment error near "+this.token.getLexeme());
         }
         this.token = this.lexicon.nextToken(); 
+    }
+
+    private void assignmentString() {
+        if(!this.token.getLexeme().equals(";")){
+            throw new RuntimeException("ERROR! Assignment error near "+this.token.getLexeme());
+        }
     }
 
     private void arithmeticExpression(){
