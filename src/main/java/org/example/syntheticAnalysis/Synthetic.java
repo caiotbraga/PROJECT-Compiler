@@ -8,11 +8,21 @@ import org.example.semanticAnalysis.SinglyListNode;
 public class Synthetic {
     private Lexicon lexicon;
     private Token token;
-    private SinglyLinkedList[] typeList = new SinglyLinkedList[10];
+    private SinglyLinkedList[] typeList = new SinglyLinkedList[100];
     private int i = 0;
+    private String id = null;
 
     public Synthetic(Lexicon lex){
         this.lexicon = lex;
+    }
+
+    public String getId(){
+        return id;
+    }
+
+    public String setId(String iden){
+        this.id = iden;
+        return this.id;
     }
 
     public void s() {
@@ -87,6 +97,9 @@ public class Synthetic {
             this.selectionStructure();
         }
         if(this.token.getType() == Token.IDENTIFIER_TYPE || equalsType(token.getLexeme()) || token.getLexeme().equals("while") || token.getLexeme().equals("if")){
+            if(this.token.getType() == Token.IDENTIFIER_TYPE){
+                setId(this.token.getLexeme());
+            }
             this.basicCommand();
         }
         if(this.token.getLexeme().equals("while") || this.token.getLexeme().equals("if") || this.token.getType() == Token.IDENTIFIER_TYPE || equalsType(token.getLexeme()) ){
@@ -168,24 +181,45 @@ public class Synthetic {
     }
 
     private void assignment() {
+        String idType = searchIdentifierType(this.id); //tem o tipo do identificador que será atribuido a um valor(número ou id)
         this.token = this.lexicon.nextToken();
-        String tokenType = lexicon.back();
         if(token.getType() == Token.DOUBLE_TYPE || token.getType() == Token.INT_TYPE){
+            if(idType == "STRING"){
+                throw new RuntimeException("ERROR! Semantic error!!! You must assign a string to the type identifier "+idType);
+            }
+            if(idType == "CHAR"){
+                throw new RuntimeException("ERROR! Semantic error!!! You must assign a char to the type identifier "+idType);
+            }
             this.arithmeticExpression();
         }else if (token.getType() == Token.STRING_TYPE){
+            if(idType == "CHAR"){
+                throw new RuntimeException("ERROR! Semantic error!!! You must assign a char to the type identifier "+idType);
+            }
+            if(idType != "STRING"){
+                throw new RuntimeException("ERROR! Semantic error!!! You must assign a number to the type identifier "+idType);
+            }
             this.assignmentString();
+        }else if(token.getType() == Token.CHAR_TYPE){
+            if(idType == "STRING"){
+                throw new RuntimeException("ERROR! Semantic error!!! You must assign a string to the type identifier "+idType);
+            }
+            if(idType != "CHAR"){
+                throw new RuntimeException("ERROR! Semantic error!!! You must assign a number to the type identifier "+idType);
+            }
+            this.assignmentChar();
         }
-        
         if(!this.token.getLexeme().equals(";")){
             throw new RuntimeException("ERROR! Assignment error near "+this.token.getLexeme());
         }
         this.token = this.lexicon.nextToken(); 
     }
 
+    private void assignmentChar() {
+        this.token = this.lexicon.nextToken();
+    }
+
     private void assignmentString() {
-        if(!this.token.getLexeme().equals(";")){
-            throw new RuntimeException("ERROR! Assignment error near "+this.token.getLexeme());
-        }
+        this.token = this.lexicon.nextToken();
     }
 
     private void arithmeticExpression(){
@@ -238,7 +272,7 @@ public class Synthetic {
     public String getTypeUsingToken(String type){
         if(type.compareTo("int") == 0){
             return "INT";
-        }else if(type.compareTo("Double") == 0){
+        }else if(type.compareTo("double") == 0){
             return "DOUBLE";
         }else if(type.compareTo("char") == 0){
             return "CHAR";
@@ -247,5 +281,14 @@ public class Synthetic {
         }else{
             throw new RuntimeException("ERROR!");
         }
+    }
+
+    public String searchIdentifierType(String id){
+        for (int i = 0; i < typeList.length; i++) {
+            if(typeList[i].getHead().getValue().compareTo(id) == 0){
+                return typeList[i].getHead().getNext().getValue();
+            }
+        }
+        return null;
     }
 }

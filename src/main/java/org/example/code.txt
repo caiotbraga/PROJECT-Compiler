@@ -1,15 +1,5 @@
 int main(){
-    int caio;
-    int andre;
-    caio = 100;
-    andre = 100;
-    if(5 > 3){
-        caio = 200;
-        if(caio == 200){
-            andre = 300;
-        }
-    }else{
-        caio = 500;
-    }
+    char caio;
+    caio = "caio";
 }
 $

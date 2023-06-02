@@ -42,12 +42,6 @@ public class Lexicon {
         this.contentIndex--;
     }
 
-    public String getIdType(){
-        this.back();
-        String idToken = token
-        return content[-1];
-    }
-
     private char lastChar() {
         char last = content[contentIndex - 1];
         return last;
