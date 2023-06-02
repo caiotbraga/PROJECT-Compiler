@@ -42,6 +42,7 @@ public class Synthetic {
         if(!token.getLexeme().equals(")")){
             throw new RuntimeException("After main you need close the parentheses *(* !");
         }
+        this.token = this.lexicon.nextToken();
         this.block();
         if(this.token.getLexeme().equals("$")){
             System.out.println("Well done! Your code don't have erros!");
@@ -51,7 +52,6 @@ public class Synthetic {
     }
 
     private void block() {
-        this.token = this.lexicon.nextToken();
         if(!token.getLexeme().equals("{")){
             throw new RuntimeException("You need open the method declaration with *{* !");
         }
@@ -96,7 +96,7 @@ public class Synthetic {
         if(this.token.getLexeme().equals("if")){
             this.selectionStructure();
         }
-        if(this.token.getType() == Token.IDENTIFIER_TYPE || equalsType(token.getLexeme()) || token.getLexeme().equals("while") || token.getLexeme().equals("if")){
+        if(this.token.getType() == Token.IDENTIFIER_TYPE || equalsType(token.getLexeme()) || token.getLexeme().equals("while") || token.getLexeme().equals("if") || token.getLexeme().equals("{")){
             if(this.token.getType() == Token.IDENTIFIER_TYPE){
                 setId(this.token.getLexeme());
             }
@@ -172,10 +172,13 @@ public class Synthetic {
     }
 
     private void basicCommand() {
-        this.token = this.lexicon.nextToken();
-        if(this.token.getLexeme().equals("=")){
-            this.assignment();
-        }else{
+        if(token.getType() == Token.IDENTIFIER_TYPE){
+            this.token = this.lexicon.nextToken();
+            if(this.token.getLexeme().equals("=")){
+                this.assignment();
+            }
+        }
+        else{
             this.block();
         }
     }

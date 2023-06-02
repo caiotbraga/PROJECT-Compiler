@@ -1,5 +1,10 @@
-int main(){
-    char caio;
-    caio = "caio";
+int main() {
+int i;
+double f;
+{
+double i;
+i = 1.5;
+}
+i = 10.5; 
 }
 $
