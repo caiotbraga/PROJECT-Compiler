@@ -123,6 +123,7 @@ public class Synthetic {
             throw new RuntimeException("ERROR! It shall be an { near "+this.token.getLexeme());
         }
         this.token = this.lexicon.nextToken();
+        this.variableDec();
         this.command();
         if(!(token.getLexeme().equals("}"))){
             throw new RuntimeException("ERROR! It shall be an } near "+this.token.getLexeme());
@@ -282,7 +283,7 @@ public class Synthetic {
         }else if(type.compareTo("String") == 0){
             return "STRING";
         }else{
-            throw new RuntimeException("ERROR!");
+            throw new RuntimeException("ERROR! Must have a variable declaration");
         }
     }
 
