@@ -57,3 +57,7 @@ Based on the current implementation, the compiler is able to handle a language t
 - Identifiers and character and string literals.
 
 This compiler can be extended to support more language features and constructs as needed.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
