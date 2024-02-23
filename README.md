@@ -41,6 +41,23 @@ Semantic analysis is the third phase of the compilation process, where meaning a
 ## Classes `SinglyLinkedList` and `SinglyListNode`
 These classes implement a simple linked list, which can be used to perform more advanced semantic analyses. They provide methods for adding and searching elements in the list.
 
+## Usage Instructions
+To use this compiler, follow these steps:
+1. Clone the repository containing the compiler code.
+  ```
+    - git clone https://github.com/caiotbraga/Compiler.git
+  ```
+3. Compile the Java source files using a Java compiler (e.g., `javac`).
+4. Ensure that your source code file is named `code.txt` and placed in the `src/main/java/org/example` directory.
+5. Update the `Lexicon` instantiation in the `Main` class with the path to the `code.txt` file.
+```
+  Lexicon lexicon = new Lexicon("INSERT YOUR CODE.TXT PATH HERE");
+```
+7. Run the `Main` class to execute the compiler.
+8. Review the output for any errors or warnings.
+
+By default, the compiler reads the source code from the `code.txt` file located in the `src/main/java/org/example` directory. Ensure that your source code is correctly formatted and follows the language grammar supported by the compiler.
+
 ## Conclusion
 This compiler implements the main phases of the compilation process and provides a basic structure for lexical, syntactic, and semantic analysis. It can be expanded and enhanced to handle a variety of programming languages.
 
