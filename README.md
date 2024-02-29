@@ -1,7 +1,12 @@
-# Compiler Documentation
+<h1 align="center">Online Sales Management System</h1>
 
 ## Introduction
 This compiler is developed in Java and consists of three main parts: lexical analysis, syntactic analysis, and semantic analysis. The goal of the compiler is to analyze source code written in a specific language and produce an intermediate representation or perform actions based on that analysis.
+
+<h2 align="center">💻Technologies useds</h2>
+<p align="center">
+  <a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html"><img alt="Java" src="https://img.shields.io/badge/Java-17-red.svg"/></a>
+</p>
 
 ## Lexical Analysis
 Lexical analysis is the first phase of the compilation process, where the source code is scanned and converted into tokens. Each token represents a lexical element of the language, such as keywords, identifiers, operators, etc. The provided source code implements this analysis in two main classes: `Token` and `Lexicon`.
